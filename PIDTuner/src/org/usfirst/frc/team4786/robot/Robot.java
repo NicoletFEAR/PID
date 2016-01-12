@@ -1,6 +1,8 @@
 
 package org.usfirst.frc.team4786.robot;
 
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
@@ -12,11 +14,21 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * directory.
  */
 public class Robot extends IterativeRobot {
-    /**
+    private CANTalon talon; 
+	/**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
+    	talon = new CANTalon(1);
+    	talon.changeControlMode(TalonControlMode.Position);
+    	final int rawCodesPerRev = 7;
+    	/** Gearbox Ratios makes every 71 turns one turn for the input.
+    	 * It also makes the torque 71 times greater.
+    	 * */
+    	final int gearboxRatio = 71;
+    	talon.configEncoderCodesPerRev(rawCodesPerRev * gearboxRatio);
+    	talon.setPID(10, 0, 0);
     }
 	
 	public void disabledPeriodic() {
